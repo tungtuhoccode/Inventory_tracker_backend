@@ -1,0 +1,1 @@
+SELECT id, category_name FROM categories;

@@ -1,0 +1,21 @@
+SELECT
+    products.id,  
+    products.barcode,
+    products.product_name, 
+    products.price, 
+    products.import_price, 
+    products.stock, 
+    brands.brand_name AS brand,
+    storage_locations.storage_location_name AS location,
+    categories.category_name AS category,
+    newImages.image_urls
+FROM products
+    LEFT JOIN brands ON brands.id = products.brand_id
+    LEFT JOIN categories ON categories.id = products.category_id
+    LEFT JOIN storage_locations ON storage_locations.id = products.storage_location_id
+    LEFT JOIN (
+        SELECT product_id, array_agg(image_url) AS image_urls
+        FROM images
+        GROUP BY product_id
+    ) AS newImages ON newImages.product_id = products.id 
+;
